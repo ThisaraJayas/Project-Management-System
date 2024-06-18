@@ -39,6 +39,7 @@ public class AuthController {
         if(isUserExist!=null){
             throw new Exception("Email already exist with another account");
         }
+
         User createdUser = new User();
         createdUser.setPassword(passwordEncoder.encode(user.getPassword()));
         createdUser.setEmail(user.getEmail());
