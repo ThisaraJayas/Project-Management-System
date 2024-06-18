@@ -1,10 +1,12 @@
 package com.thisara.ProjectManagementSystem.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Data;
+
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -15,6 +17,10 @@ public class User {
     private String fullName;
     private String email;
     private String password;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "assignee", cascade = CascadeType.ALL)  //one user has many issues
+    private List<Issue> assignedIssues = new ArrayList<>();
 
     private int projectSize; //when created project count increase
 }
