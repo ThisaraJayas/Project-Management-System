@@ -1,10 +1,12 @@
 package com.thisara.ProjectManagementSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,6 +23,11 @@ public class Chat {
     @OneToOne
     private Project project;
 
-    @OneToMany
+    @JsonIgnore
+    //orphanRemoval delete if deleted message from chat as well
+    @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Message> messages;
+
+    @ManyToMany
+    private List<User> users = new ArrayList<>();
 }
