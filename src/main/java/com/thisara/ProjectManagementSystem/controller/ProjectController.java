@@ -1,5 +1,6 @@
 package com.thisara.ProjectManagementSystem.controller;
 
+import com.thisara.ProjectManagementSystem.entity.Chat;
 import com.thisara.ProjectManagementSystem.entity.Project;
 import com.thisara.ProjectManagementSystem.entity.User;
 import com.thisara.ProjectManagementSystem.response.MessageResponse;
@@ -55,7 +56,7 @@ public class ProjectController {
                                                  @RequestBody Project project) throws Exception {
         User user=userService.findUserProfileByJwt(jwt);
         Project updatedProject=projectService.updatedProject(project,projectId);
-        return new ResponseEntity<>(createdProjects, HttpStatus.OK);
+        return new ResponseEntity<>(updatedProject, HttpStatus.OK);
     }
     @DeleteMapping("/{projectId}")
     public ResponseEntity<MessageResponse>deleteProject(@PathVariable Long projectId,
@@ -75,5 +76,13 @@ public class ProjectController {
         User user=userService.findUserProfileByJwt(jwt);
         List<Project>projects=projectService.searchProjects(keyword,user);
         return new ResponseEntity<>(projects, HttpStatus.OK);
+    }
+
+    @GetMapping("/projectId/chat")
+    public ResponseEntity<Chat>getChatProjectById(@PathVariable Long projectId,
+                                                 @RequestHeader("Authorization")String jwt) throws Exception {
+        User user=userService.findUserProfileByJwt(jwt);
+        Chat chat=projectService.getChatByProjectId(projectId);
+        return new ResponseEntity<>(chat, HttpStatus.OK);
     }
 }
