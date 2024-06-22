@@ -82,6 +82,18 @@
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
 
+<!--		RAZOR PAY for payment-->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20210307</version>
+		</dependency>
+		<dependency>
+			<groupId>com.razorpay</groupId>
+			<artifactId>razorpay-java</artifactId>
+			<version>1.4.3</version>
+		</dependency>
+		<!--		RAZOR PAY for payment end-->
 	</dependencies>
 
 	<build>

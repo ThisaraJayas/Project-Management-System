@@ -44,7 +44,7 @@ public class MessageServiceImpl implements MessageService{
     @Override
     public List<Message> getMessageByProjectId(Long projectId) throws Exception {
         Chat chat = projectService.getChatByProjectId(projectId);
-        List<Message>findChatIdOrderByCreatedAtAsc= messageRepository.findChatIdOrderByCreatedAtAsc(chat.getId());
-        return findChatIdOrderByCreatedAtAsc;
+        List<Message>findByChatIdOrderByCreatedAtAsc= messageRepository.findByChatIdOrderByCreatedAtAsc(chat.getId());
+        return findByChatIdOrderByCreatedAtAsc;
     }
 }
