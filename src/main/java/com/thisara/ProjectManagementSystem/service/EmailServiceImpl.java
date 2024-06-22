@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class EmailServiceImpl implements EmailService{
 
     @Autowired
-    private JavaMailSender javaMailSender
+    private JavaMailSender javaMailSender;
     @Override
     public void sendEmailWithToken(String userEmail, String link) throws MessagingException {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();

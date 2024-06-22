@@ -1,9 +1,12 @@
 package com.thisara.ProjectManagementSystem.controller;
 
 import com.thisara.ProjectManagementSystem.entity.Chat;
+import com.thisara.ProjectManagementSystem.entity.Invitation;
 import com.thisara.ProjectManagementSystem.entity.Project;
 import com.thisara.ProjectManagementSystem.entity.User;
+import com.thisara.ProjectManagementSystem.repository.InviteRequest;
 import com.thisara.ProjectManagementSystem.response.MessageResponse;
+import com.thisara.ProjectManagementSystem.service.InvitationService;
 import com.thisara.ProjectManagementSystem.service.ProjectService;
 import com.thisara.ProjectManagementSystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,8 @@ public class ProjectController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private InvitationService invitationService;
     @GetMapping
     public ResponseEntity<List<Project>>getProjects(@RequestParam(required = false)String category,
                                                     @RequestParam(required = false)String tag,
@@ -64,7 +69,7 @@ public class ProjectController {
                                                 ) throws Exception {
         User user=userService.findUserProfileByJwt(jwt);
        projectService.deleteProject(projectId,user.getId());
-        MessageResponse res = new MessageResponse("Project deleted successfully")
+        MessageResponse res = new MessageResponse("Project deleted successfully");
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
@@ -84,5 +89,28 @@ public class ProjectController {
         User user=userService.findUserProfileByJwt(jwt);
         Chat chat=projectService.getChatByProjectId(projectId);
         return new ResponseEntity<>(chat, HttpStatus.OK);
+    }
+
+    @PostMapping("/invite")
+    public ResponseEntity<MessageResponse>inviteProject(
+            @RequestBody InviteRequest req,
+            @RequestHeader("Authorization")String jwt,
+            @RequestBody Project project) throws Exception {
+        User user=userService.findUserProfileByJwt(jwt);
+        Project createdProjects=projectService.createProject(project,user);
+        invitationService.sendInvitation(req.getEmail(), req.getProjectId());
+        MessageResponse res = new MessageResponse("User Invitation send");
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
+    @GetMapping("/accept_invitation")
+    public ResponseEntity<Invitation>acceptInviteProject(
+            @RequestParam String token,
+            @RequestHeader("Authorization")String jwt,
+            @RequestBody Project project) throws Exception {
+        User user=userService.findUserProfileByJwt(jwt);
+        Invitation invitation =invitationService.acceptInvitation(token,user.getId());
+        projectService.addUserToProject(invitation.getProjectId(),user.getId());
+        return new ResponseEntity<>(invitation, HttpStatus.ACCEPTED);
     }
 }
