@@ -62,7 +62,7 @@ public class IssueController {
         res.setMessage("Issue Deleted");
         return ResponseEntity.ok(res);
     }
-    @PostMapping("/{issueId}/assignee/{userId}")
+    @PutMapping("/{issueId}/assignee/{userId}")
     public ResponseEntity<Issue>addUserToIssue(@PathVariable Long issueId, @PathVariable Long userId) throws Exception{
         Issue issue = issueService.addUserToIssue(issueId,userId);
         return ResponseEntity.ok(issue);

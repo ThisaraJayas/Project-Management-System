@@ -38,7 +38,7 @@ public class ProjectController {
         return new ResponseEntity<>(projects, HttpStatus.OK);
     }
 
-    @GetMapping("/projectId")
+    @GetMapping("/{projectId}")
     public ResponseEntity<Project>getProjectById(@PathVariable Long projectId,
                                                     @RequestHeader("Authorization")String jwt) throws Exception {
         User user=userService.findUserProfileByJwt(jwt);
@@ -83,7 +83,7 @@ public class ProjectController {
         return new ResponseEntity<>(projects, HttpStatus.OK);
     }
 
-    @GetMapping("/projectId/chat")
+    @GetMapping("/{projectId}/chat")
     public ResponseEntity<Chat>getChatProjectById(@PathVariable Long projectId,
                                                  @RequestHeader("Authorization")String jwt) throws Exception {
         User user=userService.findUserProfileByJwt(jwt);

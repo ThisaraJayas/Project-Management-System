@@ -24,6 +24,9 @@ public class JwtProvider {
     }
     //method to get email from jwttoken
     public static String getEmailFromToken(String jwt){
+
+        //remove bearer character
+        jwt=jwt.substring(7); //skip 7 characters
         Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwt).getBody();
         //extract email from claim
         return String.valueOf(claims.get("email"));

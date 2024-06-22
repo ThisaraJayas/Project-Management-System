@@ -23,8 +23,8 @@ public class CommentController {
     @Autowired
     private UserService userService;
 
-    @PostMapping
-    public ResponseEntity<Comment>createComment(@RequestBody CreateCommentRequest req, @RequestHeader("Authorized")String jwt)throws Exception{
+    @PostMapping()
+    public ResponseEntity<Comment>createComment(@RequestBody CreateCommentRequest req, @RequestHeader("Authorization")String jwt)throws Exception{
         User user=userService.findUserProfileByJwt(jwt);
         Comment createdComment = commentService.createComment(
                 req.getIssueId(),
@@ -34,7 +34,7 @@ public class CommentController {
         return new ResponseEntity<>(createdComment, HttpStatus.CREATED);
     }
     @DeleteMapping("/{commentId}")
-    public ResponseEntity<MessageResponse>deleteComment(@PathVariable Long commentId,@RequestHeader("Authorized")String jwt)throws Exception{
+    public ResponseEntity<MessageResponse>deleteComment(@PathVariable Long commentId,@RequestHeader("Authorization")String jwt)throws Exception{
         User user=userService.findUserProfileByJwt(jwt);
         commentService.deleteComment(commentId,user.getId());
         MessageResponse res = new MessageResponse();
